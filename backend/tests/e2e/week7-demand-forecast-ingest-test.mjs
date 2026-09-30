@@ -142,6 +142,30 @@ async function login(identifier, password) {
   // still counted exactly once as a request, not dropped or double-counted
   check("live ingest: emergency booking raises emergency forecast only", afterEmergency.expectedRequests === afterNormal.expectedRequests + 1 && afterEmergency.emergencyExpected === afterNormal.emergencyExpected + 1, `r=${afterNormal.expectedRequests}->${afterEmergency.expectedRequests} e=${afterNormal.emergencyExpected}->${afterEmergency.emergencyExpected}`);
 
+  // ---------- 6. Rebuild must reproduce what live ingest recorded ----------
+  // This is the regression guard for the two write paths disagreeing. A rebuild
+  // used to bucket rows by the booking's created date while live ingest used
+  // the scheduled date, so an admin clicking "Rebuild dataset" silently moved
+  // every booking off its future date and erased the future forecast. The two
+  // paths must now agree exactly for the date we just booked.
+  const fedRead = () => api("/forecast", "GET", { token: fed, query: { date: bookedDate, days: 1, category: "Plumbing", zone: COIMBATORE_ZONE } });
+  const beforeRebuild = (await fedRead()).data.forecast[0];
+  const rebuildAgain = await api("/forecast/rebuild", "POST", { token: fed });
+  check("rebuild re-runs after live ingest", rebuildAgain.status === 201, JSON.stringify(rebuildAgain.data).slice(0, 120));
+  const afterRebuild = (await fedRead()).data.forecast[0];
+  check(
+    "rebuild preserves the scheduled-date row written by live ingest",
+    afterRebuild?.expectedRequests === beforeRebuild?.expectedRequests && afterRebuild?.emergencyExpected === beforeRebuild?.emergencyExpected,
+    `live-ingest r=${beforeRebuild?.expectedRequests} e=${beforeRebuild?.emergencyExpected} -> after-rebuild r=${afterRebuild?.expectedRequests} e=${afterRebuild?.emergencyExpected}`
+  );
+  // a created-date rebuild would have moved this booking to today, so the
+  // scheduled date must still be the one holding the demand
+  check(
+    "rebuild keeps future demand on its scheduled date",
+    (await fedRead()).data.forecast.length === 1 && afterRebuild.expectedRequests > 0,
+    `scheduledDate=${bookedDate} requests=${afterRebuild?.expectedRequests}`
+  );
+
   console.log(`\nWeek 7: ${passed} passed, ${failed} failed`);
   if (failed > 0) process.exit(1);
 })();

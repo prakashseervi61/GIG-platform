@@ -62,7 +62,17 @@ export async function rebuildForecastDataset(actorId: string | null): Promise<{ 
       `INSERT INTO forecast_daily (zone, service_category, service_date, requests, emergency_requests)
        SELECT COALESCE(c.name, 'UNAFFILIATED') AS zone,
               s.category AS service_category,
-              b.created_at::date AS service_date,
+              -- bucket by the scheduled service date, not the created date, so
+              -- that a rebuild reproduces exactly what live ingest recorded.
+              -- ingestBookingDaily keys rows off the scheduled date, and
+              -- booking.service.ts converts with toISOString() (UTC), hence the
+              -- explicit AT TIME ZONE 'UTC' rather than the server default.
+              -- Known limit: ingest only runs on create and is never decremented
+              -- on cancel, so a cancelled booking keeps counting here too. That
+              -- is deliberate -- filtering here alone would desynchronise the
+              -- two paths. Excluding cancelled demand needs a compensating
+              -- decrement at cancellation time, not a filter in one place.
+              (b.scheduled_start AT TIME ZONE 'UTC')::date AS service_date,
               count(*)::int AS requests,
               count(*) FILTER (WHERE b.priority = 'emergency')::int AS emergency_requests
        FROM bookings b

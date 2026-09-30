@@ -61,7 +61,8 @@ const FUTURE = (hours = 2) => new Date(Date.now() + hours * 3600 * 1000).toISOSt
       });
       if (attempt.status < 400) { created = attempt; break; }
     }
-    const bid = created.data.booking.id;
+    const bid = created?.data?.booking?.id;
+    if (!bid) throw new Error(`makeCompletedBooking: no free slot for service ${serviceId} (last: ${JSON.stringify(created?.data ?? null)})`);
     await api(`/bookings/${bid}/status`, "PATCH", { token: workerTok, body: { status: "accepted" } });
     await api(`/bookings/${bid}/status`, "PATCH", { token: workerTok, body: { status: "in_progress" } });
     const done = await api(`/bookings/${bid}/status`, "PATCH", { token: workerTok, body: { status: "completed" } });
@@ -97,11 +98,25 @@ const FUTURE = (hours = 2) => new Date(Date.now() + hours * 3600 * 1000).toISOSt
   check("double rating on same booking -> 409", doubleRate.status === 409);
 
   // rating a non-completed booking -> 400
-  const pending = await api("/bookings", "POST", {
-    token: customer,
-    body: { serviceId: plumbingRepair.id, workerId: rameshId, scheduledStart: FUTURE(24 * 10), latitude: COIMBATORE.lat, longitude: COIMBATORE.lng, address: "RS Puram, Coimbatore" }
-  });
-  const pendingId = pending.data.booking.id;
+  // Booking a single fixed offset makes this test order-dependent: once earlier
+  // suites (or a previous run) have consumed that slot the POST returns 4xx and
+  // reading `.data.booking.id` used to crash the whole suite with a TypeError,
+  // masking a data-state problem as a hard failure. Retry across offsets like
+  // makeCompletedBooking does, and fail loudly with the reason if none is free.
+  let lastPendingError = null;
+  const pendingAttempt = await (async () => {
+    for (const h of [240, 288, 336, 384, 432, 480, 528, 576]) {
+      const attempt = await api("/bookings", "POST", {
+        token: customer,
+        body: { serviceId: plumbingRepair.id, workerId: rameshId, scheduledStart: FUTURE(h), latitude: COIMBATORE.lat, longitude: COIMBATORE.lng, address: "RS Puram, Coimbatore" }
+      });
+      if (attempt.status < 400) return attempt;
+      lastPendingError = attempt;
+    }
+    return null;
+  })();
+  check("booking for non-completed rating check created", pendingAttempt !== null, pendingAttempt ? "" : `last error: ${JSON.stringify(lastPendingError?.data ?? lastPendingError?.status)}`);
+  const pendingId = pendingAttempt?.data?.booking?.id;
   await api(`/bookings/${pendingId}/status`, "PATCH", { token: ramesh, body: { status: "accepted" } });
   const ratePending = await api("/ratings", "POST", { token: customer, body: { bookingId: pendingId, rating: 3 } });
   check("cannot rate a non-completed booking -> 400", ratePending.status === 400);
@@ -113,11 +128,21 @@ const FUTURE = (hours = 2) => new Date(Date.now() + hours * 3600 * 1000).toISOSt
   });
   check("second customer registered", other.status === 201, JSON.stringify(other.data));
   const otherTok = other.data.accessToken;
-  const otherCreated = await api("/bookings", "POST", {
-    token: otherTok,
-    body: { serviceId: electricalRepair.id, workerId: sitaId, scheduledStart: FUTURE(32), latitude: COIMBATORE.lat, longitude: COIMBATORE.lng, address: "Gandhipuram, Coimbatore" }
-  });
-  const otherBid = otherCreated.data.booking.id;
+  // same fixed-offset fragility as above: retry, and never crash on a 4xx
+  let lastOtherError = null;
+  const otherCreated = await (async () => {
+    for (const h of [32, 80, 128, 176, 224, 272, 320, 368, 416, 464]) {
+      const attempt = await api("/bookings", "POST", {
+        token: otherTok,
+        body: { serviceId: electricalRepair.id, workerId: sitaId, scheduledStart: FUTURE(h), latitude: COIMBATORE.lat, longitude: COIMBATORE.lng, address: "Gandhipuram, Coimbatore" }
+      });
+      if (attempt.status < 400) return attempt;
+      lastOtherError = attempt;
+    }
+    return null;
+  })();
+  check("other-customer booking created", otherCreated !== null, otherCreated ? "" : `last error: ${JSON.stringify(lastOtherError?.data ?? lastOtherError?.status)}`);
+  const otherBid = otherCreated?.data?.booking?.id;
   await api(`/bookings/${otherBid}/status`, "PATCH", { token: sita, body: { status: "accepted" } });
   await api(`/bookings/${otherBid}/status`, "PATCH", { token: sita, body: { status: "in_progress" } });
   await api(`/bookings/${otherBid}/status`, "PATCH", { token: sita, body: { status: "completed" } });

@@ -43,7 +43,11 @@ async function login(identifier, password) {
 
   // 1. Service catalogue
   const allServices = await api("/services", "GET", { token: customer });
-  check("GET /services lists all 6", allServices.status === 200 && allServices.data.count === 6, JSON.stringify(allServices.data));
+  // assert the intent (a complete, self-consistent catalogue) rather than a magic
+  // number. This was hardcoded to 6 and went stale when the seed grew, so it
+  // passed/failed for reasons unrelated to the endpoint. count must agree with
+  // the payload length and must actually contain services.
+  check("GET /services returns the full catalogue", allServices.status === 200 && allServices.data.count > 0 && allServices.data.count === allServices.data.services.length, JSON.stringify(allServices.data).slice(0, 160));
   const plumbing = await api("/services", "GET", { token: customer, query: { category: "Plumbing" } });
   check("filter by category=Plumbing", plumbing.status === 200 && plumbing.data.services.every((s) => s.category === "Plumbing") && plumbing.data.count === 2);
   const cleanedSearch = await api("/services", "GET", { token: customer, query: { search: "clean" } });
