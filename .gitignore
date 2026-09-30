@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local DB / uploads data
+*.sqlite
+*.sqlite3
+uploads/
+
+# Screenshots / QA artifacts (large, regenerable)
+docs/qa/*.png
+docs/qa/*.jpg
+
+# Local tooling scratch (regenerable, machine-specific)
+.playwright-mcp/
+.run/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

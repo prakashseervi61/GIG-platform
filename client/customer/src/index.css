@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-brand-50: #eef7f1;
+  --color-brand-100: #d8ecd9;
+  --color-brand-200: #b3d9ba;
+  --color-brand-300: #86bf96;
+  --color-brand-400: #5ba075;
+  --color-brand-500: #3f875d;
+  --color-brand-600: #2c6e49;
+  --color-brand-700: #22573a;
+  --color-brand-800: #1c4530;
+  --color-brand-900: #173827;
+
+  --color-teal-50: #ecfdfb;
+  --color-teal-100: #d1fae9;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+
+  --color-sky-50: #f0f7ff;
+  --color-sky-600: #2563eb;
+  --color-sky-700: #1d4ed8;
+
+  --color-surface: #f5f6f4;
+  --color-navy: #1a2332;
+  --color-navy-600: #4a5568;
+  --color-navy-400: #718096;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-navy);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+/* ---- floating bottom nav: sliding pill indicator ---- */
+.dock-pill {
+  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.5, 1);
+  will-change: transform;
+}
+
+.dock-item {
+  transition: color 0.25s ease;
+}
+
+.dock-icon {
+  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+.dock-item[data-active="true"] .dock-icon {
+  transform: translateY(-1px) scale(1.06);
+}
+
+.dock-label {
+  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+.dock-item[data-active="true"] .dock-label {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-pill,
+  .dock-icon,
+  .dock-label,
+  .dock-item {
+    transition: none;
+  }
+}
+
+/* horizontal rails: snap + fade edge, like the category rails in Swiggy/Zomato */
+.rail {
+  display: flex;
+  gap: 0.625rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail > * {
+  scroll-snap-align: start;
+}
+
+/* ---- auth mode switch motion ---- */
+@keyframes auth-slide-in-right {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes auth-slide-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.auth-slide-right { animation: auth-slide-in-right 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.auth-slide-left  { animation: auth-slide-in-left 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ---- splash motion ---- */
+@keyframes splash-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes splash-scale-in {
+  from { opacity: 0; transform: scale(0.86); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes splash-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+@keyframes splash-shimmer {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(240%) skewX(-18deg); }
+}
+@keyframes splash-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.12); }
+}
+@keyframes splash-out {
+  to { opacity: 0; transform: translateY(-26px) scale(0.985); }
+}
+
+.anim-fade-up   { animation: splash-fade-up 0.62s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-scale-in  { animation: splash-scale-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-float     { animation: splash-float 5.5s ease-in-out infinite; }
+.anim-glow      { animation: splash-glow 7s ease-in-out infinite; }
+.anim-out       { animation: splash-out 0.42s cubic-bezier(0.55, 0, 0.55, 0.2) both; }
+
+.splash-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.splash-shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: splash-shimmer 2.8s ease-in-out infinite;
+}

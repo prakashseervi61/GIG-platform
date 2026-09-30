@@ -1,0 +1,110 @@
+# CoopGig — full local stack (SIH PS 26089)
+#   postgres (PostGIS) + redis + backend API + customer/worker/admin SPAs (nginx)
+#
+#   docker compose up --build
+#   -> customer  http://localhost:8080
+#   -> worker    http://localhost:8081
+#   -> admin     http://localhost:8082
+#   -> API       http://localhost:4000/api
+#
+# Migrations and seed run automatically on backend start.
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gig
+      POSTGRES_PASSWORD: gig_password
+      POSTGRES_DB: gig
+    volumes:
+      - gig-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gig -d gig"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - gig-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DATABASE_URL: postgres://gig:gig_password@postgres:5432/gig
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-me-access-secret-000000}
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret-00000}
+      JWT_REFRESH_EXPIRES_IN: 7d
+      CORS_ORIGINS: http://localhost:8080,http://localhost:8081,http://localhost:8082
+    command: >
+      sh -c "node dist/db/migrate.js && node dist/seed/seed.js && node dist/index.js"
+    ports:
+      - "4000:4000"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:4000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  customer:
+    build:
+      context: ./client
+      args:
+        APP: customer
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "8080:80"
+
+  worker:
+    build:
+      context: ./client
+      args:
+        APP: worker
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "8081:80"
+
+  admin:
+    build:
+      context: ./client
+      args:
+        APP: admin
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "8082:80"
+
+volumes:
+  gig-postgres-data:
+  gig-redis-data:

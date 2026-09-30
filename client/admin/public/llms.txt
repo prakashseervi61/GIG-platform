@@ -1,0 +1,12 @@
+# CoopGig Admin
+
+> Admin dashboard for Cooperative Gig Services — a cooperative platform connecting skilled workers with gig opportunities.
+
+The admin dashboard lets cooperative and federation administrators manage workers, track bookings, and view demand forecasting analytics.
+
+## Pages
+
+- [Dashboard](/): Platform overview with key metrics
+- [Bookings](/bookings): Manage and filter bookings
+- [Workers](/workers): Manage registered workers
+- [Forecast](/forecast): Demand forecasting analytics

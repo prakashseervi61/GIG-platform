@@ -1,0 +1,272 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" fill="none" role="img" aria-label="Five cooperative workers — electrician, plumber, carpenter, cleaner and technician — standing in front of a neighbourhood with homes, trees, community buildings and map pins">
+  <!-- ============ BACKGROUND: soft neighbourhood, low contrast ============ -->
+  <g>
+    <!-- map / network lines -->
+    <g stroke="#D5EBDE" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 9" fill="none">
+      <path d="M60 176 Q 210 120 372 168 T 690 150 T 1010 172 T 1170 140" />
+      <path d="M120 232 Q 300 196 470 226 T 820 208 T 1150 236" />
+    </g>
+
+    <!-- location pins -->
+    <g fill="#CBE7D8">
+      <g transform="translate(282 132)">
+        <path d="M0 -22c-9 0-16 7-16 16 0 12 16 28 16 28s16-16 16-28c0-9-7-16-16-16z" />
+        <circle cx="0" cy="-6" r="6" fill="#F2F9F5" />
+      </g>
+      <g transform="translate(524 116)">
+        <path d="M0 -18c-7.5 0-13.5 6-13.5 13.5 0 10 13.5 24 13.5 24s13.5-14 13.5-24c0-7.5-6-13.5-13.5-13.5z" />
+        <circle cx="0" cy="-5" r="5" fill="#F2F9F5" />
+      </g>
+      <g transform="translate(988 122)">
+        <path d="M0 -20c-8 0-14.5 6.5-14.5 14.5 0 11 14.5 26 14.5 26s14.5-15 14.5-26c0-8-6.5-14.5-14.5-14.5z" />
+        <circle cx="0" cy="-5.5" r="5.5" fill="#F2F9F5" />
+      </g>
+    </g>
+
+    <!-- distant tree line -->
+    <g>
+      <g transform="translate(96 268)">
+        <rect x="-5" y="0" width="10" height="34" rx="5" fill="#CFE6D8" />
+        <circle cx="0" cy="-6" r="22" fill="#DCF0E5" />
+        <circle cx="-13" cy="6" r="14" fill="#DCF0E5" />
+        <circle cx="13" cy="6" r="14" fill="#DCF0E5" />
+      </g>
+      <g transform="translate(352 262)">
+        <rect x="-5" y="0" width="10" height="38" rx="5" fill="#CFE6D8" />
+        <circle cx="0" cy="-8" r="24" fill="#DCF0E5" />
+        <circle cx="-14" cy="5" r="15" fill="#DCF0E5" />
+        <circle cx="14" cy="5" r="15" fill="#DCF0E5" />
+      </g>
+      <g transform="translate(1122 266)">
+        <rect x="-5" y="0" width="10" height="36" rx="5" fill="#CFE6D8" />
+        <circle cx="0" cy="-7" r="23" fill="#DCF0E5" />
+        <circle cx="-13" cy="6" r="14" fill="#DCF0E5" />
+        <circle cx="13" cy="6" r="14" fill="#DCF0E5" />
+      </g>
+    </g>
+
+    <!-- houses + community building (between the workers) -->
+    <g>
+      <g transform="translate(272 300)">
+        <rect x="-34" y="-52" width="68" height="52" rx="5" fill="#DCEFE4" />
+        <path d="M-42 -52 L0 -86 L42 -52Z" fill="#CDE6D8" />
+        <rect x="-22" y="-38" width="18" height="16" rx="3" fill="#F4FAF6" />
+        <rect x="6" y="-38" width="18" height="16" rx="3" fill="#F4FAF6" />
+        <rect x="-9" y="-16" width="18" height="16" rx="2" fill="#CDE6D8" />
+      </g>
+      <g transform="translate(486 306)">
+        <rect x="-30" y="-44" width="60" height="44" rx="5" fill="#DCEFE4" />
+        <path d="M-38 -44 L0 -74 L38 -44Z" fill="#CDE6D8" />
+        <rect x="-19" y="-32" width="15" height="14" rx="3" fill="#F4FAF6" />
+        <rect x="5" y="-32" width="15" height="14" rx="3" fill="#F4FAF6" />
+        <rect x="-8" y="-14" width="16" height="14" rx="2" fill="#CDE6D8" />
+      </g>
+      <g transform="translate(736 300)">
+        <rect x="-40" y="-66" width="80" height="66" rx="5" fill="#D8EBE0" />
+        <path d="M-48 -66 L0 -104 L48 -66Z" fill="#C9E3D4" />
+        <rect x="-7" y="-124" width="14" height="20" rx="7" fill="#C9E3D4" />
+        <circle cx="0" cy="-76" r="9" fill="#F4FAF6" />
+        <path d="M0 -80v4l3 2" stroke="#8FBBA4" stroke-width="2" stroke-linecap="round" fill="none" />
+        <rect x="-28" y="-52" width="15" height="16" rx="3" fill="#F4FAF6" />
+        <rect x="-6" y="-52" width="15" height="16" rx="3" fill="#F4FAF6" />
+        <rect x="16" y="-52" width="15" height="16" rx="3" fill="#F4FAF6" />
+        <rect x="-9" y="-24" width="18" height="24" rx="3" fill="#C9E3D4" />
+      </g>
+      <g transform="translate(958 308)">
+        <rect x="-28" y="-40" width="56" height="40" rx="5" fill="#DCEFE4" />
+        <path d="M-36 -40 L0 -68 L36 -40Z" fill="#CDE6D8" />
+        <rect x="-17" y="-28" width="14" height="13" rx="3" fill="#F4FAF6" />
+        <rect x="4" y="-28" width="14" height="13" rx="3" fill="#F4FAF6" />
+        <rect x="-7" y="-12" width="15" height="12" rx="2" fill="#CDE6D8" />
+      </g>
+    </g>
+
+    <!-- rolling ground -->
+    <path d="M0 330 Q 210 306 430 328 T 880 316 T 1200 330 L1200 400 L0 400Z" fill="#DCF0E5" />
+    <path d="M0 358 Q 260 336 540 356 T 1200 350 L1200 400 L0 400Z" fill="#CFE9DA" />
+  </g>
+
+  <!-- ============ FIGURES ============ -->
+
+  <!-- 1 · ELECTRICIAN -->
+  <g transform="translate(175 360)">
+    <ellipse cx="0" cy="4" rx="62" ry="9" fill="#BFDCCB" />
+    <!-- legs + shoes -->
+    <rect x="-32" y="-104" width="26" height="90" rx="12" fill="#26303D" />
+    <rect x="6" y="-104" width="26" height="90" rx="12" fill="#26303D" />
+    <rect x="-36" y="-18" width="32" height="18" rx="8" fill="#1B232D" />
+    <rect x="4" y="-18" width="32" height="18" rx="8" fill="#1B232D" />
+    <!-- torso -->
+    <rect x="-42" y="-198" width="84" height="98" rx="26" fill="#1F3A5F" />
+    <!-- hi-vis vest -->
+    <path d="M-34 -196 h68 v74 h-68z" fill="#E0A94A" />
+    <path d="M-34 -176 h68 v10 h-68z M-34 -152 h68 v10 h-68z" fill="#F7FAF8" />
+    <path d="M-34 -196 l-16 22 M34 -196 l16 22" stroke="#E0A94A" stroke-width="12" stroke-linecap="round" />
+    <!-- arms -->
+    <rect x="-60" y="-188" width="20" height="82" rx="10" fill="#1F3A5F" transform="rotate(8 -50 -190)" />
+    <rect x="40" y="-188" width="20" height="82" rx="10" fill="#1F3A5F" transform="rotate(-8 50 -190)" />
+    <circle cx="-58" cy="-104" r="11" fill="#EFC39C" />
+    <circle cx="58" cy="-104" r="11" fill="#EFC39C" />
+    <!-- tool belt -->
+    <rect x="-44" y="-118" width="88" height="18" rx="7" fill="#33383F" />
+    <rect x="-30" y="-114" width="16" height="22" rx="4" fill="#4A515B" />
+    <rect x="14" y="-114" width="16" height="22" rx="4" fill="#4A515B" />
+    <!-- neck + head -->
+    <rect x="-9" y="-214" width="18" height="20" rx="7" fill="#DFA97E" />
+    <circle cx="0" cy="-242" r="29" fill="#EFC39C" />
+    <path d="M-29 -242a29 29 0 0 1 58 0z" fill="#241C15" />
+    <circle cx="-10" cy="-244" r="3" fill="#241C15" />
+    <circle cx="10" cy="-244" r="3" fill="#241C15" />
+    <path d="M-8 -231q8 7 16 0" stroke="#241C15" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    <!-- hard hat -->
+    <path d="M-32 -254a32 30 0 0 1 64 0z" fill="#E0A94A" />
+    <rect x="-42" y="-257" width="84" height="11" rx="5.5" fill="#C9922F" />
+    <rect x="-4" y="-282" width="8" height="28" rx="4" fill="#C9922F" />
+  </g>
+
+  <!-- 2 · PLUMBER -->
+  <g transform="translate(400 360)">
+    <ellipse cx="0" cy="4" rx="62" ry="9" fill="#BFDCCB" />
+    <rect x="-32" y="-104" width="26" height="90" rx="12" fill="#1F7A4D" />
+    <rect x="6" y="-104" width="26" height="90" rx="12" fill="#1F7A4D" />
+    <rect x="-36" y="-18" width="32" height="18" rx="8" fill="#173F2E" />
+    <rect x="4" y="-18" width="32" height="18" rx="8" fill="#173F2E" />
+    <rect x="-42" y="-198" width="84" height="98" rx="26" fill="#F1F6F3" />
+    <rect x="-60" y="-188" width="20" height="82" rx="10" fill="#F1F6F3" transform="rotate(8 -50 -190)" />
+    <rect x="40" y="-188" width="20" height="82" rx="10" fill="#F1F6F3" transform="rotate(-8 50 -190)" />
+    <circle cx="-58" cy="-104" r="11" fill="#D79A6A" />
+    <circle cx="58" cy="-104" r="11" fill="#D79A6A" />
+    <!-- overall bib + straps -->
+    <path d="M-28 -152h56v58h-56z" fill="#1F7A4D" />
+    <path d="M-30 -196 l14 46 M30 -196 l-14 46" stroke="#1F7A4D" stroke-width="11" stroke-linecap="round" fill="none" />
+    <rect x="-28" y="-160" width="20" height="16" rx="3" fill="#E8F6EF" />
+    <rect x="8" y="-160" width="20" height="16" rx="3" fill="#E8F6EF" />
+    <circle cx="-18" cy="-152" r="3.5" fill="#E8F6EF" />
+    <circle cx="18" cy="-152" r="3.5" fill="#E8F6EF" />
+    <!-- neck + head + cap -->
+    <rect x="-9" y="-214" width="18" height="20" rx="7" fill="#C98A5C" />
+    <circle cx="0" cy="-242" r="29" fill="#D79A6A" />
+    <path d="M-29 -246a29 29 0 0 1 58 -4c-10 6 -46 8 -58 4z" fill="#3B2A1C" />
+    <circle cx="-10" cy="-244" r="3" fill="#2A1D12" />
+    <circle cx="10" cy="-244" r="3" fill="#2A1D12" />
+    <path d="M-8 -231q8 7 16 0" stroke="#2A1D12" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    <path d="M-31 -256a31 20 0 0 1 62 0z" fill="#238B57" />
+    <rect x="-38" y="-258" width="76" height="10" rx="5" fill="#176B45" />
+    <!-- pipe + wrench -->
+    <rect x="66" y="-176" width="16" height="150" rx="8" fill="#C3CCD6" />
+    <rect x="60" y="-140" width="28" height="18" rx="6" fill="#9AA5B1" />
+    <g transform="translate(-70 -128) rotate(-14)">
+      <rect x="-9" y="-46" width="18" height="60" rx="8" fill="#9AA5B1" />
+      <path d="M-16 -46a16 16 0 0 0 32 0z" fill="#C3CCD6" transform="translate(0 -14)" />
+    </g>
+  </g>
+
+  <!-- 3 · CARPENTER -->
+  <g transform="translate(625 360)">
+    <ellipse cx="0" cy="4" rx="62" ry="9" fill="#BFDCCB" />
+    <rect x="-32" y="-104" width="26" height="90" rx="12" fill="#4A5568" />
+    <rect x="6" y="-104" width="26" height="90" rx="12" fill="#4A5568" />
+    <rect x="-36" y="-18" width="32" height="18" rx="8" fill="#333C4A" />
+    <rect x="4" y="-18" width="32" height="18" rx="8" fill="#333C4A" />
+    <rect x="-42" y="-198" width="84" height="98" rx="26" fill="#F1F5F3" />
+    <rect x="-60" y="-188" width="20" height="82" rx="10" fill="#F1F5F3" transform="rotate(8 -50 -190)" />
+    <rect x="40" y="-188" width="20" height="82" rx="10" fill="#F1F5F3" transform="rotate(-8 50 -190)" />
+    <circle cx="-58" cy="-104" r="11" fill="#A9714B" />
+    <circle cx="58" cy="-104" r="11" fill="#A9714B" />
+    <!-- apron -->
+    <path d="M-30 -190 h60 l8 96 h-76z" fill="#8C6A43" />
+    <path d="M-30 -190 l-12 26 M30 -190 l12 26" stroke="#8C6A43" stroke-width="10" stroke-linecap="round" fill="none" />
+    <rect x="-20" y="-150" width="40" height="26" rx="4" fill="#7A5B39" />
+    <!-- neck + head -->
+    <rect x="-9" y="-214" width="18" height="20" rx="7" fill="#8F5C39" />
+    <circle cx="0" cy="-242" r="29" fill="#A9714B" />
+    <path d="M-29 -244a29 29 0 0 1 58 0c0 5 -7 1 -12 -3 -9 5 -37 7 -46 3z" fill="#171310" />
+    <circle cx="-10" cy="-244" r="3" fill="#171310" />
+    <circle cx="10" cy="-244" r="3" fill="#171310" />
+    <path d="M-8 -231q8 7 16 0" stroke="#171310" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    <path d="M-20 -226q20 16 40 0q-2 18 -20 18t-20 -18z" fill="#241C15" />
+    <!-- hammer + plank -->
+    <g transform="translate(64 -150) rotate(18)">
+      <rect x="-6" y="-10" width="12" height="66" rx="6" fill="#B98A4B" />
+      <rect x="-20" y="-26" width="40" height="18" rx="6" fill="#9AA5B1" />
+    </g>
+    <g transform="translate(-72 -150) rotate(-8)">
+      <rect x="-9" y="-46" width="18" height="96" rx="5" fill="#C79A5B" />
+      <rect x="-9" y="-46" width="18" height="10" fill="#B98A4B" />
+    </g>
+  </g>
+
+  <!-- 4 · CLEANER -->
+  <g transform="translate(850 360)">
+    <ellipse cx="0" cy="4" rx="62" ry="9" fill="#BFDCCB" />
+    <rect x="-32" y="-104" width="26" height="90" rx="12" fill="#2F6B57" />
+    <rect x="6" y="-104" width="26" height="90" rx="12" fill="#2F6B57" />
+    <rect x="-36" y="-18" width="32" height="18" rx="8" fill="#1F4E3E" />
+    <rect x="4" y="-18" width="32" height="18" rx="8" fill="#1F4E3E" />
+    <rect x="-42" y="-198" width="84" height="98" rx="26" fill="#E8F6EF" />
+    <path d="M-42 -176 h84 v14 h-84z" fill="#238B57" />
+    <rect x="-42" y="-118" width="84" height="18" rx="7" fill="#238B57" />
+    <rect x="-60" y="-188" width="20" height="82" rx="10" fill="#E8F6EF" transform="rotate(8 -50 -190)" />
+    <rect x="40" y="-188" width="20" height="82" rx="10" fill="#E8F6EF" transform="rotate(-8 50 -190)" />
+    <circle cx="-58" cy="-104" r="11" fill="#E3B183" />
+    <circle cx="58" cy="-104" r="11" fill="#E3B183" />
+    <!-- neck + head + cap -->
+    <rect x="-9" y="-214" width="18" height="20" rx="7" fill="#D19A6C" />
+    <circle cx="0" cy="-242" r="29" fill="#E3B183" />
+    <path d="M-29 -246a29 29 0 0 1 58 0c-14 8 -44 8 -58 0z" fill="#4A3222" />
+    <circle cx="-10" cy="-244" r="3" fill="#2A1D12" />
+    <circle cx="10" cy="-244" r="3" fill="#2A1D12" />
+    <path d="M-8 -231q8 7 16 0" stroke="#2A1D12" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    <path d="M-30 -258a30 18 0 0 1 60 0z" fill="#176B45" />
+    <rect x="-36" y="-260" width="72" height="9" rx="4.5" fill="#124F33" />
+    <!-- mop + bucket -->
+    <g transform="translate(70 -150) rotate(14)">
+      <rect x="-5" y="-6" width="10" height="120" rx="5" fill="#9AA5B1" />
+      <rect x="-18" y="108" width="36" height="34" rx="8" fill="#C3CCD6" />
+      <rect x="-18" y="108" width="36" height="12" rx="6" fill="#9AA5B1" />
+    </g>
+    <g transform="translate(-64 -142)">
+      <path d="M-18 0h36l-5 44h-26z" fill="#238B57" />
+      <path d="M-18 0a18 18 0 0 1 36 0z" fill="#176B45" />
+      <rect x="-4" y="-40" width="8" height="26" rx="4" fill="#9AA5B1" />
+      <rect x="-14" y="-52" width="28" height="16" rx="5" fill="#C3CCD6" />
+    </g>
+  </g>
+
+  <!-- 5 · TECHNICIAN -->
+  <g transform="translate(1075 360)">
+    <ellipse cx="0" cy="4" rx="62" ry="9" fill="#BFDCCB" />
+    <rect x="-32" y="-104" width="26" height="90" rx="12" fill="#22304A" />
+    <rect x="6" y="-104" width="26" height="90" rx="12" fill="#22304A" />
+    <rect x="-36" y="-18" width="32" height="18" rx="8" fill="#1A2436" />
+    <rect x="4" y="-18" width="32" height="18" rx="8" fill="#1A2436" />
+    <rect x="-42" y="-198" width="84" height="98" rx="26" fill="#14213D" />
+    <!-- hi-vis vest -->
+    <path d="M-32 -194 h64 v72 h-64z" fill="#E0A94A" />
+    <path d="M-32 -172 h64 v9 h-64z" fill="#F7FAF8" />
+    <path d="M-32 -146 h64 v9 h-64z" fill="#F7FAF8" />
+    <path d="M-32 -194 l-14 20 M32 -194 l14 20" stroke="#E0A94A" stroke-width="11" stroke-linecap="round" />
+    <rect x="-60" y="-188" width="20" height="82" rx="10" fill="#14213D" transform="rotate(8 -50 -190)" />
+    <rect x="40" y="-188" width="20" height="82" rx="10" fill="#14213D" transform="rotate(-8 50 -190)" />
+    <circle cx="-58" cy="-104" r="11" fill="#8A5A3B" />
+    <circle cx="58" cy="-104" r="11" fill="#8A5A3B" />
+    <!-- neck + head + headset -->
+    <rect x="-9" y="-214" width="18" height="20" rx="7" fill="#6E4527" />
+    <circle cx="0" cy="-242" r="29" fill="#8A5A3B" />
+    <path d="M-29 -246a29 29 0 0 1 58 0c-12 6 -44 6 -58 0z" fill="#2B2118" />
+    <circle cx="-10" cy="-244" r="3" fill="#1A1410" />
+    <circle cx="10" cy="-244" r="3" fill="#1A1410" />
+    <path d="M-8 -231q8 7 16 0" stroke="#1A1410" stroke-width="2.6" fill="none" stroke-linecap="round" />
+    <path d="M-30 -248a31 31 0 0 1 60 0" stroke="#176B45" stroke-width="7" fill="none" stroke-linecap="round" />
+    <rect x="-38" y="-250" width="12" height="22" rx="6" fill="#238B57" />
+    <rect x="26" y="-250" width="12" height="22" rx="6" fill="#238B57" />
+    <path d="M32 -232 q10 4 6 14" stroke="#176B45" stroke-width="4" fill="none" stroke-linecap="round" />
+    <circle cx="36" cy="-216" r="5" fill="#238B57" />
+    <!-- toolbox -->
+    <g transform="translate(-70 -138)">
+      <rect x="-26" y="0" width="52" height="38" rx="7" fill="#C9922F" />
+      <rect x="-26" y="0" width="52" height="12" rx="6" fill="#E0A94A" />
+      <rect x="-10" y="-12" width="20" height="14" rx="6" fill="none" stroke="#C9922F" stroke-width="5" />
+    </g>
+  </g>
+</svg>

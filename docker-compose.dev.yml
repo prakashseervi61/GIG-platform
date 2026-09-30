@@ -1,0 +1,11 @@
+# Infra-only override for host-native development (used by start.sh / stop.sh).
+# Publishes postgres/redis to the host ports that backend/.env expects so the
+# API can run as a normal local node process instead of inside compose.
+#   postgres -> localhost:5433   redis -> localhost:6379
+services:
+  postgres:
+    ports:
+      - "5433:5432"
+  redis:
+    ports:
+      - "6379:6379"
