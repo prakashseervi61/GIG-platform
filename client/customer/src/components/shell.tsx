@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, ClipboardList, Wrench, Bell } from "lucide-react";
 import { api } from "../lib/api";
@@ -15,26 +15,28 @@ export function Shell({ children }: { children: ReactNode }) {
   const loc = useLocation();
   const { user } = useAuth();
   const [unread, setUnread] = useState(0);
+  const refreshUnread = useCallback(() => {
+    api
+      .get("/notifications/unread-count")
+      .then((d) => setUnread(Number(d?.unreadCount ?? 0)))
+      .catch(() => undefined);
+  }, []);
   const active = (to: string) =>
     to === "/" ? loc.pathname === "/" : loc.pathname === to || loc.pathname.startsWith(to + "/");
 
   const activeIndex = Math.max(0, tabs.findIndex((t) => active(t.to)));
-  const onNotifications = loc.pathname === "/notifications";
 
-  // the bell dot must reflect real unread notifications, not merely "logged in"
+  // the bell dot must reflect real unread notifications, not merely "logged in".
+  // Re-check whenever the user leaves the notifications screen OR lands back on it
+  // after marking things read elsewhere: depending only on the path left the dot
+  // stale for the rest of the visit, because "mark all read" does not navigate.
   useEffect(() => {
-    let alive = true;
-    api
-      .get("/notifications/unread-count")
-      .then((d) => {
-        if (alive) setUnread(Number(d?.unreadCount ?? 0));
-      })
-      .catch(() => undefined);
-    return () => {
-      alive = false;
-    };
-    // re-check when leaving the notifications screen, where things get read
-  }, [onNotifications]);
+    refreshUnread();
+    // also react to read-state changes made in place on the notifications page,
+    // which do not change the route
+    window.addEventListener("notifications:read", refreshUnread);
+    return () => window.removeEventListener("notifications:read", refreshUnread);
+  }, [loc.pathname, refreshUnread]);
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-surface pb-24">

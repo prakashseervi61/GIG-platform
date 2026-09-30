@@ -237,17 +237,48 @@ export function ConfirmDialog({
   const cancelRef = useRef(onCancel);
   cancelRef.current = onCancel;
 
+  // move focus into the dialog on open, trap Tab inside it, and hand focus back
+  // to whatever opened it on close. Without this the dialog is reachable by Tab
+  // but focus never actually enters it, and screen-reader users are left on the
+  // page behind the overlay.
+  const panelRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") cancelRef.current();
+      if (e.key === "Escape") {
+        cancelRef.current();
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusables = [
+        ...panelRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+        ),
+      ].filter((el) => el.offsetParent !== null);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      // wrap at both ends so focus cannot escape the modal
+      if (e.shiftKey && (active === first || !panelRef.current.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+    const previouslyFocused = document.activeElement as HTMLElement | null;
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // prefer focusing the cancel button: it is the non-destructive choice
+    const initial = panelRef.current?.querySelector<HTMLElement>("button");
+    initial?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      previouslyFocused?.focus?.();
     };
   }, [open]);
 
@@ -259,6 +290,7 @@ export function ConfirmDialog({
       onClick={() => cancelRef.current()}
     >
       <div
+        ref={panelRef}
         role="alertdialog"
         aria-modal="true"
         aria-label={title}

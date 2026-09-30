@@ -21,6 +21,9 @@ export default function NotificationsPage() {
   async function markAll() {
     await api.patch("/notifications/read-all");
     setItems((xs) => xs.map((x) => ({ ...x, isRead: true })));
+    // tell the shell the unread count changed, so the bell dot clears without
+    // needing a navigation to trigger a refetch
+    window.dispatchEvent(new Event("notifications:read"));
   }
 
   const unread = items.filter((n) => !n.isRead).length;
