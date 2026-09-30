@@ -122,10 +122,13 @@ async function login(identifier, password) {
   check("live ingest: normal booking keeps emergency forecast", afterNormal.emergencyExpected === before?.emergencyExpected, `before=${before?.emergencyExpected} after=${afterNormal.emergencyExpected}`);
 
   const emergency = await (async () => {
-    for (const h of [72, 144, 216, 288, 360]) {
+    // Anchor the emergency booking to the SAME calendar date as the normal one.
+    // Comparing two different dates would mix the emergency signal with the
+    // per-date model baseline, which differs by weekday and cannot be equal.
+    for (const hour of [10, 11, 13, 14, 16]) {
       const attempt = await api("/bookings", "POST", {
         token: customer,
-        body: { serviceId: plumbing.id, workerId: rameshId, scheduledStart: new Date(Date.now() + h * 3600 * 1000).toISOString(), latitude: 11.0168, longitude: 76.9558, address: "Probe St, Coimbatore", priority: "emergency" }
+        body: { serviceId: plumbing.id, workerId: rameshId, scheduledStart: `${bookedDate}T${String(hour).padStart(2, "0")}:00:00.000Z`, latitude: 11.0168, longitude: 76.9558, address: "Probe St, Coimbatore", priority: "emergency" }
       });
       if (attempt.status === 201) return attempt;
     }
@@ -133,8 +136,11 @@ async function login(identifier, password) {
   })();
   check("ingest-trigger emergency booking created", emergency.status === 201, JSON.stringify(emergency.data).slice(0, 120));
   const eDate = emergency?.data?.booking?.scheduledStart?.slice(0, 10) ?? bookedDate;
+  check("emergency booking lands on the same forecast date as the normal one", eDate === bookedDate, `${bookedDate} vs ${eDate}`);
   const afterEmergency = (await api("/forecast", "GET", { token: fed, query: { date: eDate, days: 1, category: "Plumbing", zone: COIMBATORE_ZONE } })).data.forecast[0];
-  check("live ingest: emergency booking raises emergency forecast only", afterEmergency.expectedRequests === afterNormal.expectedRequests && afterEmergency.emergencyExpected === afterNormal.emergencyExpected + 1, `r=${before.expectedRequests}->${afterEmergency.expectedRequests} e=${before.emergencyExpected}->${afterEmergency.emergencyExpected}`);
+  // "only" = the emergency booking moves the emergency counter by one and is
+  // still counted exactly once as a request, not dropped or double-counted
+  check("live ingest: emergency booking raises emergency forecast only", afterEmergency.expectedRequests === afterNormal.expectedRequests + 1 && afterEmergency.emergencyExpected === afterNormal.emergencyExpected + 1, `r=${afterNormal.expectedRequests}->${afterEmergency.expectedRequests} e=${afterNormal.emergencyExpected}->${afterEmergency.emergencyExpected}`);
 
   console.log(`\nWeek 7: ${passed} passed, ${failed} failed`);
   if (failed > 0) process.exit(1);

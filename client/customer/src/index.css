@@ -28,6 +28,13 @@
   --color-navy: #1a2332;
   --color-navy-600: #4a5568;
   --color-navy-400: #718096;
+
+  /* accent powers the amber Button tone (e.g. the sandbox payment action) */
+  --color-accent-50: #fffbeb;
+  --color-accent-100: #fef3c7;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+  --color-accent-700: #b45309;
 }
 
 html,

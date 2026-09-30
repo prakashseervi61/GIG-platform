@@ -79,7 +79,9 @@ export interface ForecastPoint {
 
 function fitForecast(history: HistoryPoint[], target: string, zone: string, category: string): ForecastPoint | null {
   const wday = weekdayOf(target);
-  const weekdaySamples = history.filter((p) => weekdayOf(p.date) === wday).slice(-12).map((p) => p.requests);
+  // exclude the target itself: once a date has ingested bookings it would
+  // otherwise feed its own observation back into the baseline predicting it
+  const weekdaySamples = history.filter((p) => weekdayOf(p.date) === wday && p.date < target).slice(-12).map((p) => p.requests);
   const overall = history.map((p) => p.requests);
   const overallMean = mean(overall);
   if (overall.length === 0 || overallMean <= 0) {
@@ -105,10 +107,23 @@ function fitForecast(history: HistoryPoint[], target: string, zone: string, cate
 
   const weekdayMean = mean(weekdaySamples);
   const base = weekdaySamples.length > 0 ? 0.6 * weekdayMean + 0.4 * overallMean : overallMean;
-  const expected = Math.round(base * trend);
-
   const shareOverall = mean(history.map((p) => p.requests)) > 0 ? mean(history.map((p) => p.emergency)) / mean(history.map((p) => p.requests)) : 0;
-  const emergencyExpected = Math.round(expected * clamp(shareOverall, 0, 1));
+
+  // Bookings already ingested for the target date are real observed demand, so
+  // they are added on top of the model baseline rather than hidden inside it.
+  // Without this the forecast ignores everything the live pipeline recorded.
+  const observed = history.find((p) => p.date === target);
+  const observedRequests = observed?.requests ?? 0;
+  const observedEmergency = observed?.emergency ?? 0;
+  const baseline = Math.round(base * trend);
+
+  const expected = baseline + observedRequests;
+
+  // The emergency figure is the day's modelled baseline plus the emergencies
+  // already booked. It is deliberately not a share of `expected`, so that adding
+  // a normal booking cannot move it, while an emergency booking always shows up
+  // even when the share-based estimate would have rounded it away.
+  const emergencyExpected = Math.round(baseline * clamp(shareOverall, 0, 1)) + observedEmergency;
 
   const label = expected >= 1.5 * overallMean ? "High" : expected >= 0.75 * overallMean ? "Medium" : "Low";
   const variance = mean(weekdaySamples.map((x) => x * x)) - weekdayMean * weekdayMean;

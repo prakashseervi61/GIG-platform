@@ -45,7 +45,10 @@ export async function ingestBookingDaily(input: IngestDailyInput): Promise<void>
      VALUES ($1, $2, $3, 1, CASE WHEN $4 THEN 1 ELSE 0 END)
      ON CONFLICT (zone, service_category, service_date)
      DO UPDATE SET
-       requests = forecast_daily.requests + CASE WHEN $4 THEN 0 ELSE 1 END,
+       -- every booking is a request, emergency or not, matching
+       -- rebuildForecastDataset's count(*); the emergency flag only
+       -- additionally moves the emergency counter
+       requests = forecast_daily.requests + 1,
        emergency_requests = forecast_daily.emergency_requests + CASE WHEN $4 THEN 1 ELSE 0 END,
        updated_at = now()`,
     [input.zone, input.category, input.date, input.emergency]

@@ -180,7 +180,9 @@ export async function createBooking(user: AuthUser, input: CreateBookingInput): 
         await ingestBookingDaily({
           zone: details.cooperativeName ?? "UNAFFILIATED",
           category: details.serviceCategory,
-          date: new Date().toISOString().slice(0, 10),
+          // demand is forecast for the day the work is booked to happen, not the
+          // day the request was made - otherwise future dates never accumulate
+          date: start.toISOString().slice(0, 10),
           emergency: details.priority === "emergency"
         });
       } catch (ingestErr) {
