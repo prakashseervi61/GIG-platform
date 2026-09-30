@@ -24,7 +24,11 @@ export function Shell({ children }: { children: ReactNode }) {
   const active = (to: string) =>
     to === "/" ? loc.pathname === "/" : loc.pathname === to || loc.pathname.startsWith(to + "/");
 
-  const activeIndex = Math.max(0, tabs.findIndex((t) => active(t.to)));
+  // Only a real prefix match activates a tab. Several screens deliberately sit
+  // outside the three tab roots (service details, worker profiles, payments,
+  // emergency), and those must show NO active tab rather than falling back to
+  // Home - which used to happen because Math.max(0, -1) resolves to index 0.
+  const activeIndex = tabs.findIndex((t) => active(t.to));
 
   // the bell dot must reflect real unread notifications, not merely "logged in".
   // Re-check whenever the user leaves the notifications screen OR lands back on it
@@ -81,12 +85,14 @@ export function Shell({ children }: { children: ReactNode }) {
       >
         <div className="pointer-events-auto mx-auto w-full max-w-md rounded-2xl border border-slate-200/80 bg-white/90 p-1.5 shadow-[0_8px_28px_-6px_rgba(15,23,42,0.22)] backdrop-blur-xl">
           <div className="relative flex">
-            {/* sliding active pill */}
-            <span
-              aria-hidden
-              className="dock-pill absolute bottom-0 left-0 top-0 w-1/3 rounded-xl bg-brand-50"
-              style={{ transform: `translateX(${activeIndex * 100}%)` }}
-            />
+            {/* sliding active pill - only shown when a tab is actually active */}
+            {activeIndex >= 0 && (
+              <span
+                aria-hidden
+                className="dock-pill absolute bottom-0 left-0 top-0 w-1/3 rounded-xl bg-brand-50"
+                style={{ transform: `translateX(${activeIndex * 100}%)` }}
+              />
+            )}
             {tabs.map((t) => {
               const isActive = active(t.to);
               return (
